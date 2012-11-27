@@ -11,32 +11,66 @@
   <button id="stop-button">Stop</button>
   <div id="info"></div>
   
-  <img style="position:absolute; left: 0px; top: 80px;" src="http://www.anniemation.com/clip_art/images/cat-walk.gif">
+  <img style="position:absolute; left: 0px; top: 80px;" src='http://www.anniemation.com/clip_art/images/cat-walk.gif'>
 
   <script>
 var movePixels = 10;
 var delayMs = 50;
 var catTimer = null;
+var img = document.getElementsByTagName('img')[0];
+var walkForwards = true;
 function catWalk() {
-  var img = document.getElementsByTagName('img')[0];
   var currentLeft = parseInt(img.style.left);
-  img.style.left = (currentLeft + movePixels) + 'px';
-  if (currentLeft > (window.innerWidth-img.width)) {
+  if (walkForwards && (currentLeft > (window.innerWidth - img.width))) {
+    walkForwards = false;
+  }
+  if (!walkForwards && (currentLeft <= 0)) {
+    walkForwards = true;
+  }
+  if (walkForwards) {
+    img.style.left = (currentLeft + movePixels) + 'px';
+  } else {
+    img.style.left = (currentLeft - movePixels) + 'px';
+  }
+  if ((currentLeft > (window.innerWidth / 2 - (img.width / 2))) && (currentLeft < (window.innerWidth / 2 - (img.width / 2) + 15))) {
+    dancingCat();
+    window.setTimeout(stopDancingCat, 5000);
+  }
+  /*
+  if (currentLeft > (window.innerWidth - img.width)) {
     img.style.left = '0px';
   }
+  */
 }
 function startCatWalk() {
   catTimer = window.setInterval(catWalk, delayMs);
 }
+function speedCat() {
+  movePixels = movePixels + (movePixels * 0.5);
+}
 function onStartClick() {
 	startCatWalk();
 }
-
 var startButton = document.getElementById('start-button');
 startButton.addEventListener('click', onStartClick);
 
 function onStopClick() {
 	window.clearInterval(catTimer);
+}
+function onSpeedClick() {
+  speedCat();
+}
+var speedButton = document.getElementById('speed-button');
+speedButton.addEventListener('click', onSpeedClick);
+
+function dancingCat() {
+  img.src = ('http://eaxan.mobile9.com/download/media/210/cat-dance_cbsoxfnm.gif');
+  movePixels = 0;
+}
+function stopDancingCat() {
+  img.src = ('http://www.anniemation.com/clip_art/images/cat-walk.gif');
+  currentLeft = parseInt(img.style.left);
+  movePixels = 10;
 }
 var stopButton = document.getElementById('stop-button');
 stopButton.addEventListener('click', onStopClick);
