@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <title>Cat Walk</title>
+ </head>
+ <body>
+  
+  <img id="kitty" style="position:absolute;" src="http://www.anniemation.com/clip_art/images/cat-walk.gif">
+
+  <script type="text/javascript">
+  	var img = document.getElementsByTagName('img')[0];
+	img.style.left = '0px';
+	var vel = 10;
+	var walkForwards = true;
+
+	function catWalk() {
+		var currentLeft = parseInt(img.style.left);
+		img.style.left = (currentLeft + vel) + "px";
+		if (currentLeft > (window.innerWidth - img.width)) {
+			vel = - 10;
+			walkForwards = false;
+		} else if (currentLeft < 0) {
+			vel = 10;
+			walkForwards = true;
+		}
+		if (currentLeft > (window.innerWidth / 2) - (img.width / 2) && (currentLeft < window.innerWidth / 2 - (img.width / 2) + 10)) {
+				img.setAttribute('src', 'http://eaxan.mobile9.com/download/media/210/cat-dance_cbsoxfnm.gif');
+				vel = 0;
+				window.setTimeout(notDance, 7000);
+		}
+	}
+	function notDance() {
+		img.setAttribute('src', 'http://www.anniemation.com/clip_art/images/cat-walk.gif');
+			if (walkForwards) {
+				vel = 10;
+			} else {
+				vel = -10;
+			}
+	}
+	
+	/*function catWalk() {
+		var currentLeft = parseInt(img.style.left);
+  		img.style.left = (currentLeft + 10) + 'px';
+  		if (currentLeft > (window.innerWidth - img.width)) {
+  			img.style.left = '0px';
+  		}
+	}*/
+	
+	window.setInterval(catWalk, 50);
+  </script>
+  
+ </body>
+</html>
